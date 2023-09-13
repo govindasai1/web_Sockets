@@ -28,23 +28,24 @@ fun Application.configureSockets() {
         webSocket("/multi_sessions") {
             val connection = Connection(this)
             connections += connection
-            send("You are connected! There are ${connections.count()} users here.")
-            for (frame in incoming) {
-                frame as? Frame.Text ?: continue
-                val receivedText = frame.readText()
-                if(receivedText=="bye"){
-                    connections.forEach {
-                        it.session.send("${connection.name} IS DISCONNECTED")
+                send("You are connected! There are ${connections.count()} users here.")
+                for (frame in incoming) {
+                    frame as? Frame.Text ?: continue
+                    val receivedText = frame.readText()
+                    if (receivedText == "bye") {
+                        connections.forEach {
+                            it.session.send("${connection.name} IS DISCONNECTED")
+                            connections -= connection
+                        }
+                    } else {
+                        val textWithUsername = "[${connection.name}]: $receivedText"
+                        connections.forEach {
+                            it.session.send(textWithUsername)
+                        }
                     }
-                    connections-=connection
+
                 }
-                else{
-                val textWithUsername = "[${connection.name}]: $receivedText"
-                connections.forEach {
-                    it.session.send(textWithUsername)
-                }
-                }
-            }
+
         }
     }
 }
