@@ -36,6 +36,7 @@ fun Application.configureSockets() {
                     connections.forEach {
                         it.session.send("${connection.name} IS DISCONNECTED")
                     }
+                    connections-=connection
                 }
                 else{
                 val textWithUsername = "[${connection.name}]: $receivedText"

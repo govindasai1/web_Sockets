@@ -18,10 +18,16 @@ application {
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
+ktor {
+    fatJar {
+        archiveFileName.set("fatWebSocket.jar")
+    }
+}
 
 repositories {
     mavenCentral()
 }
+
 
 dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
