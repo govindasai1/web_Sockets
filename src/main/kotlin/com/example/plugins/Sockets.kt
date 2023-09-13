@@ -12,7 +12,7 @@ fun Application.configureSockets() {
     install(WebSockets) {
     }
     routing {
-        webSocket("/single_session") { // websocketSession
+        webSocket("/single_session") {
             for (frame in incoming) {
                 if (frame is Frame.Text) {
                     val text = frame.readText()
